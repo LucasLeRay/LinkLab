@@ -22,3 +22,6 @@ yarn-error.log*
 
 # editor config
 .vscode
+
+# environment variables
+.env
