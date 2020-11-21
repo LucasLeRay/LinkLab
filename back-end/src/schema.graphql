@@ -1,0 +1,41 @@
+type Query {
+  links(category: ID!): [Link]
+  categories: [Category]
+}
+
+type Mutation {
+  createLink(input: CreateLinkInput!): Link
+  updateLink(input: UpdateLinkInput!): Link
+  deleteLink(input: DeleteLinkInput!): Link
+  updateCategoryIcon(input: UpdateCategoryIconInput!): Category
+}
+
+type Link {
+  id: ID!
+  url: String!
+}
+
+type Category {
+  id: ID!
+  name: String!
+  icon: String
+  links: [Link]!
+}
+
+input CreateLinkInput {
+  url: String!
+}
+
+input UpdateLinkInput {
+  id: ID!
+  categories: [String]
+}
+
+input DeleteLinkInput {
+  id: ID!
+}
+
+input UpdateCategoryIconInput {
+  category: ID!
+  icon: String
+}
