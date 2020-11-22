@@ -1,7 +1,10 @@
 import styled from 'styled-components'
-import { elementType, oneOfType, string, arrayOf, node, bool } from 'prop-types'
+import { shape, oneOfType, string, arrayOf, node, bool } from 'prop-types'
 
 const StyledButton = styled.button`
+  display: flex;
+  align-items: center;
+
   height: 48px;
   width: 100%;
   max-width: 288px;
@@ -54,7 +57,7 @@ function Button({ icon, emoji, primary, children }) {
 }
 
 Button.propTypes = {
-  icon: elementType,
+  icon: shape({}),
   emoji: string,
   primary: bool,
   children: oneOfType([arrayOf(node), node]).isRequired,
