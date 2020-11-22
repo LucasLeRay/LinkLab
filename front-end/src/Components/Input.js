@@ -11,8 +11,7 @@ const Wrapper = styled.div`
   align-items: center;
 
   height: 32px;
-  width: 100%;
-  max-width: ${({ icon }) => (icon ? '266' : '258')}px;
+  width: calc(100% - ${({ icon }) => (icon ? '40' : '48')}px);
   margin: 8px;
   padding: 8px 16px 8px ${({ icon }) => (icon ? '8' : '16')}px;
   border-radius: 10px;
@@ -29,6 +28,7 @@ const Wrapper = styled.div`
 
 const StyledInput = styled.input`
   width: 100%;
+  max-width: calc(100% - 8px);
   background-color: var(--color-grey-3);
   border: none;
   color: var(--color-grey-1);

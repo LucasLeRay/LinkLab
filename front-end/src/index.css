@@ -17,6 +17,7 @@ html {
 
 body {
   margin: 0;
+  color: var(--color-grey-1);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-family: var(--font-body);

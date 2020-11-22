@@ -4,12 +4,12 @@ import { shape, oneOfType, string, arrayOf, node, bool } from 'prop-types'
 const StyledButton = styled.button`
   display: flex;
   align-items: center;
+  justify-content: ${({ center }) => (center ? 'center' : 'baseline')};
 
   height: 48px;
-  width: 100%;
-  max-width: 288px;
+  width: calc(100% - 16px);
   margin: 8px;
-  padding: 8px 8px 8px ${({ icon }) => (icon ? '8' : '48')}px;
+  padding: 8px 8px 8px ${({ icon, center }) => (icon || center ? '8' : '48')}px;
   border-radius: 10px;
   font-size: 18px;
   font-weight: 600;
@@ -17,7 +17,6 @@ const StyledButton = styled.button`
   cursor: pointer;
   border: none;
   outline: inherit;
-  text-align: left;
 
   background-color: var(
     --color-${({ primary }) => (primary ? 'primary' : 'grey-4')}
@@ -46,9 +45,9 @@ const IconWrapper = styled.div`
   }
 `
 
-function Button({ icon, emoji, primary, children }) {
+function Button({ icon, emoji, primary, center, children }) {
   return (
-    <StyledButton icon={icon || emoji} primary={primary}>
+    <StyledButton icon={icon || emoji} primary={primary} center={center}>
       {emoji && <EmojiWrapper>{emoji}</EmojiWrapper>}
       {icon && <IconWrapper>{icon}</IconWrapper>}
       {children}
@@ -60,6 +59,7 @@ Button.propTypes = {
   icon: shape({}),
   emoji: string,
   primary: bool,
+  center: bool,
   children: oneOfType([arrayOf(node), node]).isRequired,
 }
 
@@ -67,6 +67,7 @@ Button.defaultProps = {
   icon: null,
   emoji: '',
   primary: false,
+  center: false,
 }
 
 export default Button

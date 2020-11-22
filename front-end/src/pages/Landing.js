@@ -9,6 +9,7 @@ function Landing() {
     <div style={{ display: 'flex' }}>
       <div
         style={{
+          width: '304px',
           display: 'flex',
           flexDirection: 'column',
           margin: '8px',
