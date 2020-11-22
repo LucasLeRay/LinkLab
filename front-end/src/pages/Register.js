@@ -31,7 +31,7 @@ const RegisterSwitch = styled.div`
   margin-top: 64px;
   display: flex;
   align-items: center;
-  font-size: 18px;
+  font-size: 16px;
 
   a {
     font-weight: 700;
