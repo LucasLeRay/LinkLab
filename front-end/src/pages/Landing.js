@@ -1,10 +1,13 @@
 import AddIcon from '@material-ui/icons/Add'
 import SearchIcon from '@material-ui/icons/Search'
+import { useContext } from 'react'
 
 import Button from '../Components/Button'
 import Input from '../Components/Input'
+import Context from '../Context'
 
 function Landing() {
+  const { handleLogout } = useContext(Context)
   return (
     <div style={{ display: 'flex' }}>
       <div
@@ -25,6 +28,9 @@ function Landing() {
           Cars
         </Button>
         <Button>Design</Button>
+        <Button center onClick={handleLogout}>
+          Logout
+        </Button>
       </div>
       <div
         style={{

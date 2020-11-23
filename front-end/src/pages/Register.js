@@ -1,10 +1,13 @@
+import { useReducer, useState } from 'react'
 import styled from 'styled-components'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
+import { Auth } from 'aws-amplify'
+import { PulseLoader } from 'react-spinners'
 
 import Button from '../Components/Button'
 import Input from '../Components/Input'
 
-const Container = styled.div`
+const Form = styled.form`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -41,25 +44,145 @@ const RegisterSwitch = styled.div`
   }
 `
 
+const Text = styled.p`
+  font-size: 18px;
+  margin-bottom: 32px;
+`
+
+const reducer = (state, { name, value }) => ({ ...state, [name]: value })
+
 function Register() {
-  return (
-    <Container>
-      <Title>Welcome 🎉</Title>
+  const [fields, dispatch] = useReducer(reducer, {
+    email: '',
+    password: '',
+    confirmPassword: '',
+    confirmationCode: '',
+  })
+  const [isLoading, setLoading] = useState(false)
+  const [newUser, setNewUser] = useState(null)
+  const history = useHistory()
+
+  async function handleSubmit(e) {
+    e.preventDefault()
+    setLoading(true)
+
+    try {
+      setNewUser(
+        await Auth.signUp({
+          username: fields.email,
+          password: fields.password,
+        }),
+      )
+    } catch (err) {
+      console.error(err)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  async function handleConfirmationSubmit(e) {
+    e.preventDefault()
+    setLoading(true)
+
+    try {
+      await Auth.confirmSignUp(fields.email, fields.confirmationCode)
+      await Auth.signIn(fields.email, fields.password)
+      history.push('/')
+    } catch (err) {
+      console.error(err)
+      setLoading(false)
+    }
+  }
+
+  function validForm() {
+    return (
+      fields.email.length > 0 &&
+      fields.password.length > 0 &&
+      fields.password === fields.confirmPassword
+    )
+  }
+
+  function validConfirmation() {
+    return fields.confirmationCode.length > 0
+  }
+
+  return newUser ? (
+    <Form onSubmit={handleConfirmationSubmit}>
+      <Text>You received a confirmation code by email.</Text>
       <InputWrapper>
-        <Input label="Email Address" type="email" />
-        <Input label="Password" type="password" />
-        <Input label="Confirm Password" type="password" />
+        <Input
+          label="Confirmation Code"
+          value={fields.confirmationCode}
+          onChange={(e) => {
+            dispatch({
+              name: 'confirmationCode',
+              value: e.target.value,
+            })
+          }}
+        />
       </InputWrapper>
       <ButtonWrapper>
-        <Button center primary>
-          Register
+        <Button center primary disable={!validConfirmation()} type="submit">
+          {isLoading ? (
+            <PulseLoader size={10} margin={10} color="#ffffff" />
+          ) : (
+            'Validate'
+          )}
+        </Button>
+      </ButtonWrapper>
+    </Form>
+  ) : (
+    <Form onSubmit={handleSubmit}>
+      <Title>Welcome 🎉</Title>
+      <InputWrapper>
+        <Input
+          label="Email Address"
+          type="email"
+          value={fields.email}
+          onChange={(e) => {
+            dispatch({
+              name: 'email',
+              value: e.target.value,
+            })
+          }}
+        />
+        <Input
+          label="Password"
+          type="password"
+          value={fields.password}
+          onChange={(e) => {
+            dispatch({
+              name: 'password',
+              value: e.target.value,
+            })
+          }}
+        />
+        <Input
+          label="Confirm Password"
+          type="password"
+          value={fields.confirmPassword}
+          onChange={(e) => {
+            dispatch({
+              name: 'confirmPassword',
+              value: e.target.value,
+            })
+          }}
+        />
+      </InputWrapper>
+      <ButtonWrapper>
+        <Button center primary disabled={!validForm()} type="submit">
+          {isLoading ? (
+            <PulseLoader size={10} margin={10} color="#ffffff" />
+          ) : (
+            'Register'
+          )}
         </Button>
       </ButtonWrapper>
       <RegisterSwitch>
         <span>Already have an account ?</span>
         <Link to="/login">Login</Link>
       </RegisterSwitch>
-    </Container>
+    </Form>
   )
 }
 

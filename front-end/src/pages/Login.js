@@ -1,10 +1,14 @@
+import { useContext, useReducer, useState } from 'react'
 import styled from 'styled-components'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
+import { Auth } from 'aws-amplify'
+import { PulseLoader } from 'react-spinners'
 
+import Context from '../Context'
 import Button from '../Components/Button'
 import Input from '../Components/Input'
 
-const Container = styled.div`
+const Form = styled.form`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -41,24 +45,77 @@ const LoginSwitch = styled.div`
   }
 `
 
+const reducer = (state, { name, value }) => ({ ...state, [name]: value })
+
 function Login() {
+  const { handleLogin } = useContext(Context)
+
+  const [fields, dispatch] = useReducer(reducer, {
+    email: '',
+    password: '',
+  })
+  const [isLoading, setLoading] = useState(false)
+  const history = useHistory()
+
+  async function handleSubmit(e) {
+    e.preventDefault()
+    setLoading(true)
+
+    try {
+      await Auth.signIn(fields.email, fields.password)
+      await handleLogin()
+      history.push('/')
+    } catch (err) {
+      console.error(err)
+      setLoading(false)
+    }
+  }
+
+  function validForm() {
+    return fields.email.length > 0 && fields.password.length > 0
+  }
+
   return (
-    <Container>
+    <Form onSubmit={handleSubmit}>
       <Title>Welcome back 🎉</Title>
       <InputWrapper>
-        <Input label="Email Address" type="email" />
-        <Input label="Password" type="password" />
+        <Input
+          label="Email Address"
+          type="email"
+          value={fields.email}
+          onChange={(e) => {
+            dispatch({
+              name: 'email',
+              value: e.target.value,
+            })
+          }}
+        />
+        <Input
+          label="Password"
+          type="password"
+          value={fields.password}
+          onChange={(e) => {
+            dispatch({
+              name: 'password',
+              value: e.target.value,
+            })
+          }}
+        />
       </InputWrapper>
       <ButtonWrapper>
-        <Button center primary>
-          Login
+        <Button center primary disabled={!validForm()}>
+          {isLoading ? (
+            <PulseLoader size={10} margin={10} color="#ffffff" />
+          ) : (
+            'Login'
+          )}
         </Button>
       </ButtonWrapper>
       <LoginSwitch>
         <span>Don&apos;t have an account ?</span>
         <Link to="/register">Create Account</Link>
       </LoginSwitch>
-    </Container>
+    </Form>
   )
 }
 

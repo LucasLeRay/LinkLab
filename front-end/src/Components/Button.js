@@ -45,9 +45,14 @@ const IconWrapper = styled.div`
   }
 `
 
-function Button({ icon, emoji, primary, center, children }) {
+function Button({ icon, emoji, primary, center, children, ...props }) {
   return (
-    <StyledButton icon={icon || emoji} primary={primary} center={center}>
+    <StyledButton
+      icon={icon || emoji}
+      primary={primary}
+      center={center}
+      {...props}
+    >
       {emoji && <EmojiWrapper>{emoji}</EmojiWrapper>}
       {icon && <IconWrapper>{icon}</IconWrapper>}
       {children}
