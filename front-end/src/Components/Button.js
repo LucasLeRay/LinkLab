@@ -5,6 +5,7 @@ const StyledButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: ${({ center }) => (center ? 'center' : 'baseline')};
+  text-transform: capitalize;
 
   height: 48px;
   width: calc(100% - 16px);

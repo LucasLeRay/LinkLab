@@ -17,7 +17,7 @@ export type Query = {
 
 
 export type QueryLinksArgs = {
-  category: Scalars['ID'];
+  tag?: Maybe<Scalars['String']>;
 };
 
 export type Mutation = {
@@ -52,6 +52,7 @@ export type Link = {
   __typename?: 'Link';
   id: Scalars['ID'];
   url: Scalars['String'];
+  tags: Array<Maybe<Scalars['String']>>;
 };
 
 export type Category = {

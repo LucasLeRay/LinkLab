@@ -1,9 +1,19 @@
 import styled from 'styled-components'
+import { gql, useQuery } from '@apollo/client'
+import { PulseLoader } from 'react-spinners'
 
 import Sidebar from '../Components/Sidebar'
 
 const Container = styled.div`
   display: flex;
+  width: 100vw;
+  height: 100vh;
+`
+
+const LoadingWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 100vw;
   height: 100vh;
 `
@@ -14,28 +24,26 @@ function getCategories(links) {
   }, [])
 }
 
-function Home() {
-  const links = [
-    {
-      id: '123',
-      url: 'https://google.fr',
-      tags: ['Startup', 'Search Engine'],
-    },
-    {
-      id: '456',
-      url: 'https://lucas-le-ray.com',
-      tags: ['Startup', 'Web Development'],
-    },
-    {
-      id: '789',
-      url: 'https://transpare.eu',
-      tags: ['trolls'],
-    },
-  ]
+const LINKS = gql`
+  query getLinks {
+    links {
+      id
+      url
+      tags
+    }
+  }
+`
 
-  return (
+function Home() {
+  const { loading, data } = useQuery(LINKS)
+
+  return loading ? (
+    <LoadingWrapper>
+      <PulseLoader size={50} margin={30} color="#ffffff" />
+    </LoadingWrapper>
+  ) : (
     <Container>
-      <Sidebar categories={getCategories(links)} />
+      <Sidebar categories={getCategories(data.links)} />
     </Container>
   )
 }

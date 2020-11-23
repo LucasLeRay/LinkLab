@@ -6,12 +6,19 @@ import {
   Redirect,
 } from 'react-router-dom'
 import { Auth } from 'aws-amplify'
+import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client'
 
 import Landing from './pages/Landing'
 import Home from './pages/Home'
 import Register from './pages/Register'
 import Login from './pages/Login'
 import Context from './Context'
+import config from './config'
+
+const client = new ApolloClient({
+  uri: config.graphqlEndpoint,
+  cache: new InMemoryCache(),
+})
 
 function App() {
   const [user, setUser] = useState(null)
@@ -40,23 +47,19 @@ function App() {
   }, [])
 
   return loading ? null : (
-    <Context.Provider
-      value={{
-        user,
-        handleLogin,
-        handleLogout,
-      }}
-    >
-      <Router>
-        <Switch>
-          {user && <Route path="/" exact component={Home} />}
-          {!user && <Route path="/" exact component={Landing} />}
-          {!user && <Route path="/register" exact component={Register} />}
-          {!user && <Route path="/login" exact component={Login} />}
-          <Redirect to="/" />
-        </Switch>
-      </Router>
-    </Context.Provider>
+    <ApolloProvider client={client}>
+      <Context.Provider value={{ user, handleLogin, handleLogout }}>
+        <Router>
+          <Switch>
+            {user && <Route path="/" exact component={Home} />}
+            {!user && <Route path="/" exact component={Landing} />}
+            {!user && <Route path="/register" exact component={Register} />}
+            {!user && <Route path="/login" exact component={Login} />}
+            <Redirect to="/" />
+          </Switch>
+        </Router>
+      </Context.Provider>
+    </ApolloProvider>
   )
 }
 

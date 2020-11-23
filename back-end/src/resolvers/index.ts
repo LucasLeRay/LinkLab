@@ -1,6 +1,8 @@
+import links from './queries/links'
+
 export default {
   Query: {
-    links: () => {},
+    links,
   },
   Mutation: {
     createLink: () => {},

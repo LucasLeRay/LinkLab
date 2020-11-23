@@ -28,7 +28,7 @@ functions:
       - http:
           path: graphql
           method: any
-          authorizer: aws_iam
+          cors: true
 
 package:
   individually: true
