@@ -8,6 +8,6 @@ export default {
     createLink: () => {},
     updateLink: () => {},
     deleteLink: () => {},
-    updateCategoryIcon: () => {},
+    updateTagIcon: () => {},
   },
 }

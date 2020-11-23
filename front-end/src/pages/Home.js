@@ -3,6 +3,7 @@ import { gql, useQuery } from '@apollo/client'
 import { PulseLoader } from 'react-spinners'
 
 import Sidebar from '../Components/Sidebar'
+import LinkCard from '../Components/LinkCard'
 
 const Container = styled.div`
   display: flex;
@@ -18,6 +19,12 @@ const LoadingWrapper = styled.div`
   height: 100vh;
 `
 
+const LinksContainer = styled.div`
+  display: flex;
+  position: relative;
+  width: 100%;
+`
+
 function getCategories(links) {
   return links.reduce((acc, { tags }) => {
     return [...acc, ...tags.filter((tag) => !acc.includes(tag))]
@@ -28,6 +35,8 @@ const LINKS = gql`
   query getLinks {
     links {
       id
+      title
+      img
       url
       tags
     }
@@ -44,6 +53,11 @@ function Home() {
   ) : (
     <Container>
       <Sidebar categories={getCategories(data.links)} />
+      <LinksContainer>
+        {data.links.map((link) => (
+          <LinkCard key={link.id} link={link} />
+        ))}
+      </LinksContainer>
     </Container>
   )
 }

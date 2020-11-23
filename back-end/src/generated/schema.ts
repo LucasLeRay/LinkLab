@@ -12,7 +12,7 @@ export type Scalars = {
 export type Query = {
   __typename?: 'Query';
   links?: Maybe<Array<Maybe<Link>>>;
-  categories?: Maybe<Array<Maybe<Category>>>;
+  tags?: Maybe<Array<Maybe<Tag>>>;
 };
 
 
@@ -25,7 +25,7 @@ export type Mutation = {
   createLink?: Maybe<Link>;
   updateLink?: Maybe<Link>;
   deleteLink?: Maybe<Link>;
-  updateCategoryIcon?: Maybe<Category>;
+  updateTagIcon?: Maybe<Tag>;
 };
 
 
@@ -44,20 +44,21 @@ export type MutationDeleteLinkArgs = {
 };
 
 
-export type MutationUpdateCategoryIconArgs = {
-  input: UpdateCategoryIconInput;
+export type MutationUpdateTagIconArgs = {
+  input: UpdateTagIconInput;
 };
 
 export type Link = {
   __typename?: 'Link';
   id: Scalars['ID'];
+  title: Scalars['String'];
+  img: Scalars['String'];
   url: Scalars['String'];
   tags: Array<Maybe<Scalars['String']>>;
 };
 
-export type Category = {
-  __typename?: 'Category';
-  id: Scalars['ID'];
+export type Tag = {
+  __typename?: 'Tag';
   name: Scalars['String'];
   icon?: Maybe<Scalars['String']>;
   links: Array<Maybe<Link>>;
@@ -76,7 +77,7 @@ export type DeleteLinkInput = {
   id: Scalars['ID'];
 };
 
-export type UpdateCategoryIconInput = {
-  category: Scalars['ID'];
+export type UpdateTagIconInput = {
+  category: Scalars['String'];
   icon?: Maybe<Scalars['String']>;
 };

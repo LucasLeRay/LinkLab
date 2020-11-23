@@ -10,11 +10,11 @@ import Button from './Button'
 import Context from '../Context'
 
 const Container = styled.div`
-  position: absolute;
   top: 0;
   left: 0;
   padding: 8px;
   width: 304px;
+  min-width: 304px;
   height: 100vh;
   display: flex;
   flex-direction: column;
