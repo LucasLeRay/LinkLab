@@ -15,15 +15,6 @@ Amplify.configure({
     identityPoolId: config.identityPoolId,
     userPoolWebClientId: config.userPoolWebClientId,
   },
-  API: {
-    endpoints: [
-      {
-        name: 'graphql',
-        endpoint: config.apiGatewayEndpoint,
-        region: config.region,
-      },
-    ],
-  },
 })
 
 ReactDOM.render(
