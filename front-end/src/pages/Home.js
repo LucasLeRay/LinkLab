@@ -21,8 +21,10 @@ const LoadingWrapper = styled.div`
 
 const LinksContainer = styled.div`
   display: flex;
+  justify-content: space-between;
   position: relative;
   width: 100%;
+  padding: 64px;
 `
 
 function getCategories(links) {

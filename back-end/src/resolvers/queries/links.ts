@@ -25,6 +25,13 @@ function links(): Array<Link> {
       url: 'https://transpare.eu',
       tags: ['trolls'],
     },
+    {
+      id: '012',
+      title: 'CrowdStar',
+      img: 'https://i.vimeocdn.com/video/883635543.webp?mw=900&mh=506&q=70',
+      url: 'https://crowdstar.xyz',
+      tags: ['Great Apps'],
+    },
   ]
 }
 
