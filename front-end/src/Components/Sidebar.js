@@ -1,4 +1,4 @@
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 import { arrayOf, string } from 'prop-types'
 import styled from 'styled-components'
 import AddIcon from '@material-ui/icons/Add'
@@ -8,6 +8,7 @@ import SearchIcon from '@material-ui/icons/Search'
 import Input from './Input'
 import Button from './Button'
 import Context from '../Context'
+import LinkFormModal from './LinkFormModal'
 
 const Container = styled.div`
   top: 0;
@@ -50,6 +51,7 @@ const Header = styled.div`
 
 function Sidebar({ categories }) {
   const { handleLogout } = useContext(Context)
+  const [modal, setModal] = useState(false)
 
   return (
     <Container>
@@ -58,13 +60,21 @@ function Sidebar({ categories }) {
         <LogoutIcon onClick={handleLogout} />
       </Header>
       <Input icon={<SearchIcon />} placeholder="Find anything" />
-      <Button primary icon={<AddIcon />}>
+      <Button primary icon={<AddIcon />} onClick={() => setModal(true)}>
         New Link
       </Button>
       <CategoriesSubtitle>All categories</CategoriesSubtitle>
       {categories.map((category) => (
         <Button key={category}>{category}</Button>
       ))}
+      {modal && (
+        <LinkFormModal
+          handleSubmit={() => {}}
+          onClickOutSide={() => {
+            setModal(false)
+          }}
+        />
+      )}
     </Container>
   )
 }
