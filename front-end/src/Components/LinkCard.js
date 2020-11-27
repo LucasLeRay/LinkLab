@@ -80,7 +80,7 @@ function LinkCard({ link }) {
       </a>
       <Options>
         {tags.map((tag) => (
-          <Tag>{tag}</Tag>
+          <Tag key={tag}>{tag}</Tag>
         ))}
       </Options>
     </Container>

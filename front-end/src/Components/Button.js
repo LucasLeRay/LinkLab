@@ -22,6 +22,7 @@ const StyledButton = styled.button`
   background-color: var(
     --color-${({ primary }) => (primary ? 'primary' : 'grey-4')}
   );
+  transition: background-color 0.1s ease;
   color: var(--color-grey-1);
 
   &:hover {
