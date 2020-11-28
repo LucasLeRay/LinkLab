@@ -1,5 +1,5 @@
 import { useContext, useState } from 'react'
-import { arrayOf, string } from 'prop-types'
+import { arrayOf, string, func } from 'prop-types'
 import styled from 'styled-components'
 import AddIcon from '@material-ui/icons/Add'
 import LogoutIcon from '@material-ui/icons/PowerSettingsNew'
@@ -49,7 +49,7 @@ const Header = styled.div`
   }
 `
 
-function Sidebar({ categories }) {
+function Sidebar({ categories, createLink }) {
   const { handleLogout } = useContext(Context)
   const [modal, setModal] = useState(false)
 
@@ -69,8 +69,8 @@ function Sidebar({ categories }) {
       ))}
       {modal && (
         <LinkFormModal
-          handleSubmit={() => {}}
-          onClickOutSide={() => {
+          onSubmit={createLink}
+          closeModal={() => {
             setModal(false)
           }}
         />
@@ -81,6 +81,7 @@ function Sidebar({ categories }) {
 
 Sidebar.propTypes = {
   categories: arrayOf(string).isRequired,
+  createLink: func.isRequired,
 }
 
 export default Sidebar

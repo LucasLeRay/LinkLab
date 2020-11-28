@@ -45,6 +45,10 @@ const LINKS = gql`
   }
 `
 
+function createLink({ url, tags }) {
+  console.log('create', url, 'with', tags)
+}
+
 function Home() {
   const { loading, data } = useQuery(LINKS)
 
@@ -54,7 +58,7 @@ function Home() {
     </LoadingWrapper>
   ) : (
     <Container>
-      <Sidebar categories={getCategories(data.links)} />
+      <Sidebar categories={getCategories(data.links)} createLink={createLink} />
       <LinksContainer>
         {data.links.map((link) => (
           <LinkCard key={link.id} link={link} />

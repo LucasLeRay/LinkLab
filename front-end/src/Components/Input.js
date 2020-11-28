@@ -62,10 +62,21 @@ const Label = styled.label`
   font-weight: 700;
 `
 
-function Input({ icon, label, ...props }) {
+const SubLabel = styled.span`
+  margin-left: 6px;
+  font-size: 18px;
+  color: var(--color-grey-2);
+`
+
+function Input({ icon, label, subLabel, ...props }) {
   return (
     <Container>
-      {label && <Label htmlFor={label}>{label}</Label>}
+      {label && (
+        <div>
+          <Label htmlFor={label}>{label}</Label>
+          {subLabel && <SubLabel>{`- ${subLabel}`}</SubLabel>}
+        </div>
+      )}
       <Wrapper icon={!!icon}>
         {icon && <IconWrapper>{icon}</IconWrapper>}
         <StyledInput name={label || undefined} {...props} />
@@ -77,11 +88,13 @@ function Input({ icon, label, ...props }) {
 Input.propTypes = {
   icon: shape({}),
   label: string,
+  subLabel: string,
 }
 
 Input.defaultProps = {
   icon: null,
   label: '',
+  subLabel: '',
 }
 
 export default Input

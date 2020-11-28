@@ -10,20 +10,21 @@ const DOMelement = document.body.appendChild(document.createElement('div'))
 const Background = styled.div`
   height: 100vh;
   width: 100vw;
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(0, 0, 0, 0.56);
   position: fixed;
   top: 0px;
   left: 0px;
-  z-index: 10;
+  z-index: 1;
   display: flex;
   justify-content: center;
   align-items: center;
 `
 
 const Container = styled.div`
-  box-shadow: 0 2px 6px 0 hsla(0, 0%, 0%, 0.2);
-  background-color: var(--color-grey-6);
-  border-radius: 5px;
+  box-shadow: 0 0 24px 0 hsla(0, 0, 0, 0.24);
+  padding: 16px;
+  background-color: var(--color-grey-5);
+  border-radius: 10px;
   margin: 20px;
 `
 
