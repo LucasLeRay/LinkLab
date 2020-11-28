@@ -13,10 +13,10 @@ import Home from './pages/Home'
 import Register from './pages/Register'
 import Login from './pages/Login'
 import Context from './Context'
-import config from './config'
+import apolloHttpLink from './helpers/apolloHttpLink'
 
 const client = new ApolloClient({
-  uri: config.graphqlEndpoint,
+  link: apolloHttpLink,
   cache: new InMemoryCache(),
 })
 
