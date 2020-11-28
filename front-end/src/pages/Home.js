@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { gql, useQuery } from '@apollo/client'
+import { gql, useMutation, useQuery } from '@apollo/client'
 import { PulseLoader } from 'react-spinners'
 
 import Sidebar from '../Components/Sidebar'
@@ -45,12 +45,21 @@ const LINKS = gql`
   }
 `
 
-function createLink({ url, tags }) {
-  console.log('create', url, 'with', tags)
-}
+const CREATE_LINK = gql`
+  mutation createLink($input: CreateLinkInput!) {
+    createLink(input: $input) {
+      id
+      title
+      img
+      url
+      tags
+    }
+  }
+`
 
 function Home() {
   const { loading, data } = useQuery(LINKS)
+  const [createLink] = useMutation(CREATE_LINK)
 
   return loading ? (
     <LoadingWrapper>
@@ -58,7 +67,19 @@ function Home() {
     </LoadingWrapper>
   ) : (
     <Container>
-      <Sidebar categories={getCategories(data.links)} createLink={createLink} />
+      <Sidebar
+        categories={getCategories(data.links)}
+        createLink={({ url, tags }) => {
+          createLink({
+            variables: {
+              input: {
+                url,
+                tags,
+              },
+            },
+          })
+        }}
+      />
       <LinksContainer>
         {data.links.map((link) => (
           <LinkCard key={link.id} link={link} />

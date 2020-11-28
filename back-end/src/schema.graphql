@@ -26,6 +26,7 @@ type Tag {
 
 input CreateLinkInput {
   url: String!
+  tags: [String]!
 }
 
 input UpdateLinkInput {

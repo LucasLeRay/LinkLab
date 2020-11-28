@@ -66,6 +66,7 @@ export type Tag = {
 
 export type CreateLinkInput = {
   url: Scalars['String'];
+  tags: Array<Maybe<Scalars['String']>>;
 };
 
 export type UpdateLinkInput = {
