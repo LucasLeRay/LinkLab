@@ -13,7 +13,7 @@ type Mutation {
 type Link {
   id: ID!
   title: String!
-  img: String!
+  img: String
   url: String!
   tags: [String]!
 }

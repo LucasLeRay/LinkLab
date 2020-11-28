@@ -52,7 +52,7 @@ export type Link = {
   __typename?: 'Link';
   id: Scalars['ID'];
   title: Scalars['String'];
-  img: Scalars['String'];
+  img?: Maybe<Scalars['String']>;
   url: Scalars['String'];
   tags: Array<Maybe<Scalars['String']>>;
 };

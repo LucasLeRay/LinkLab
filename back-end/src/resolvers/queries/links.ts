@@ -1,38 +1,34 @@
+import AWS from 'aws-sdk'
+
 import { Link } from '../../generated/schema'
 
-function links(): Array<Link> {
-  return [
-    {
-      id: '123',
-      title: 'Google Search',
-      img:
-        'https://4wearegamers.com/wp-content/uploads/2018/06/Google-Wallpaper-11.jpeg',
-      url: 'https://google.fr',
-      tags: ['Startup', 'Search Engine'],
+const dynamoDb = new AWS.DynamoDB.DocumentClient()
+
+async function links(
+  _: any,
+  { tag }: { tag: string },
+  context: any,
+): Promise<Array<Link>> {
+  const { user } = context
+  if (!user) throw new Error('User not authenticated.')
+
+  const params = {
+    TableName: process.env.LINK_TABLE,
+    KeyConditionExpression: 'userId = :userId',
+    ExpressionAttributeValues: {
+      ':userId': user.Username,
     },
-    {
-      id: '456',
-      title: 'Lucas Le Ray',
-      img:
-        'https://lucas-le-ray.com/static/me-d2fc1c80e55cbf91385ed1f6d68d3069.png',
-      url: 'https://lucas-le-ray.com',
-      tags: ['Startup', 'Web Development'],
-    },
-    {
-      id: '789',
-      title: 'Transpare',
-      img: 'https://techsnooper.io/wp-content/uploads/2019/06/Transpare.png',
-      url: 'https://transpare.eu',
-      tags: ['trolls'],
-    },
-    {
-      id: '012',
-      title: 'CrowdStar',
-      img: 'https://i.vimeocdn.com/video/883635543.webp?mw=900&mh=506&q=70',
-      url: 'https://crowdstar.xyz',
-      tags: ['Great Apps'],
-    },
-  ]
+  }
+
+  const result = await dynamoDb.query(params).promise()
+
+  return result.Items.map(({ linkId: id, title, img, url, tags }) => ({
+    id,
+    title: title || url,
+    img,
+    url,
+    tags,
+  }))
 }
 
 export default links

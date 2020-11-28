@@ -18,7 +18,7 @@ async function createLink(
     TableName: process.env.LINK_TABLE,
     Item: {
       userId: user.Username,
-      noteId: id,
+      linkId: id,
       url: input.url,
       tags: input.tags,
       createdAt: Date.now(),
