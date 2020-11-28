@@ -69,6 +69,7 @@ function LinkFormModal({
               .map((tag) => tag.trim())
               .filter(Boolean),
           })
+          closeModal()
         }}
       >
         <Title>New Link 🎉</Title>

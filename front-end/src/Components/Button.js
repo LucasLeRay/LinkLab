@@ -1,6 +1,12 @@
 import styled from 'styled-components'
 import { shape, oneOfType, string, arrayOf, node, bool } from 'prop-types'
 
+function backgroundColor({ selected, primary }) {
+  if (selected) return '--color-grey-3'
+  if (primary) return '--color-primary'
+  return '--color-grey-4'
+}
+
 const StyledButton = styled.button`
   display: flex;
   align-items: center;
@@ -19,9 +25,7 @@ const StyledButton = styled.button`
   border: none;
   outline: inherit;
 
-  background-color: var(
-    --color-${({ primary }) => (primary ? 'primary' : 'grey-4')}
-  );
+  background-color: var(${(props) => backgroundColor(props)});
   transition: background-color 0.1s ease;
   color: var(--color-grey-1);
 
@@ -47,12 +51,21 @@ const IconWrapper = styled.div`
   }
 `
 
-function Button({ icon, emoji, primary, center, children, ...props }) {
+function Button({
+  icon,
+  emoji,
+  primary,
+  center,
+  selected,
+  children,
+  ...props
+}) {
   return (
     <StyledButton
       icon={icon || emoji}
       primary={primary}
       center={center}
+      selected={selected}
       {...props}
     >
       {emoji && <EmojiWrapper>{emoji}</EmojiWrapper>}
@@ -67,6 +80,7 @@ Button.propTypes = {
   emoji: string,
   primary: bool,
   center: bool,
+  selected: bool,
   children: oneOfType([arrayOf(node), node]).isRequired,
 }
 
@@ -75,6 +89,7 @@ Button.defaultProps = {
   emoji: '',
   primary: false,
   center: false,
+  selected: false,
 }
 
 export default Button

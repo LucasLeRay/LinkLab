@@ -19,7 +19,7 @@ const Overlay = styled.div`
   left: 0;
   height: 144px;
   width: 288px;
-  background: url('${(props) => props.img}');
+  background: ${(props) => (props.img ? `url('${props.img}')` : '#fff')};
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -68,16 +68,20 @@ const Tag = styled.div`
   cursor: pointer;
 `
 
+const LinkWrapper = styled.a`
+  color: var(--color-grey-1);
+`
+
 function LinkCard({ link }) {
   const { title, img, url, tags } = link
   return (
     <Container>
-      <Title>{title}</Title>
-      <a href={url} target="_blank" rel="noreferrer">
+      <LinkWrapper href={url} target="_blank" rel="noreferrer">
+        <Title>{title}</Title>
         <Overlay img={img}>
           <BlackLayer />
         </Overlay>
-      </a>
+      </LinkWrapper>
       <Options>
         {tags.map((tag) => (
           <Tag key={tag}>{tag}</Tag>
@@ -91,7 +95,7 @@ LinkCard.propTypes = {
   link: shape({
     id: string.isRequired,
     title: string.isRequired,
-    img: string.isRequired,
+    img: string,
     url: string.isRequired,
     tags: arrayOf(string).isRequired,
   }).isRequired,

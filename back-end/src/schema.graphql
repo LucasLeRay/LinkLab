@@ -1,5 +1,5 @@
 type Query {
-  links(tag: String): [Link]
+  links: [Link]
   tags: [Tag]
 }
 

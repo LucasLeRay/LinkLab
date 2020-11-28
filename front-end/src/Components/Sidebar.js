@@ -16,7 +16,7 @@ const Container = styled.div`
   padding: 8px;
   width: 304px;
   min-width: 304px;
-  height: 100vh;
+  height: calc(100vh - 16px);
   display: flex;
   flex-direction: column;
   background-color: var(--color-grey-5);
@@ -49,7 +49,7 @@ const Header = styled.div`
   }
 `
 
-function Sidebar({ categories, createLink }) {
+function Sidebar({ categories, createLink, selectedTag, setSelectedTag }) {
   const { handleLogout } = useContext(Context)
   const [modal, setModal] = useState(false)
 
@@ -65,7 +65,15 @@ function Sidebar({ categories, createLink }) {
       </Button>
       <CategoriesSubtitle>All categories</CategoriesSubtitle>
       {categories.map((category) => (
-        <Button key={category}>{category}</Button>
+        <Button
+          selected={selectedTag === category}
+          key={category}
+          onClick={() => {
+            setSelectedTag(selectedTag === category ? null : category)
+          }}
+        >
+          {category}
+        </Button>
       ))}
       {modal && (
         <LinkFormModal
@@ -80,8 +88,14 @@ function Sidebar({ categories, createLink }) {
 }
 
 Sidebar.propTypes = {
+  selectedTag: string,
+  setSelectedTag: func.isRequired,
   categories: arrayOf(string).isRequired,
   createLink: func.isRequired,
+}
+
+Sidebar.defaultProps = {
+  selectedTag: null,
 }
 
 export default Sidebar
