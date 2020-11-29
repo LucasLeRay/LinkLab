@@ -11,8 +11,11 @@
     "deploy": "npm run build && serverless deploy"
   },
   "dependencies": {
+    "@types/cheerio": "^0.22.22",
     "apollo-server-lambda": "^2.19.0",
+    "cheerio": "^1.0.0-rc.3",
     "graphql": "^15.4.0",
+    "node-fetch": "^2.6.1",
     "uuid": "^8.3.1"
   },
   "devDependencies": {
