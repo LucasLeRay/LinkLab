@@ -69,7 +69,7 @@ const Tag = styled.div`
 `
 
 const LinkWrapper = styled.a`
-  color: var(--color-grey-2);
+  color: var(--color-grey-1);
 `
 
 function LinkCard({ link, selectedTag, setSelectedTag }) {
