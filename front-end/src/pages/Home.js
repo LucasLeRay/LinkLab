@@ -112,7 +112,12 @@ function Home() {
         {data.links
           .filter((link) => !selectedTag || link.tags.includes(selectedTag))
           .map((link) => (
-            <LinkCard key={link.id} link={link} />
+            <LinkCard
+              selectedTag={selectedTag}
+              setSelectedTag={setSelectedTag}
+              key={link.id}
+              link={link}
+            />
           ))}
       </LinksContainer>
     </Container>

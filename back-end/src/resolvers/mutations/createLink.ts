@@ -29,7 +29,7 @@ async function createLink(
 
   return {
     id,
-    title: 'TITLE',
+    title: input.url,
     img: '',
     ...input,
   }

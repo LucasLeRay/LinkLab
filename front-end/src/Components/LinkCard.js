@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { string, arrayOf, shape } from 'prop-types'
+import { string, arrayOf, shape, func } from 'prop-types'
 
 const Container = styled.div`
   position: relative;
@@ -72,7 +72,7 @@ const LinkWrapper = styled.a`
   color: var(--color-grey-1);
 `
 
-function LinkCard({ link }) {
+function LinkCard({ link, selectedTag, setSelectedTag }) {
   const { title, img, url, tags } = link
   return (
     <Container>
@@ -84,7 +84,12 @@ function LinkCard({ link }) {
       </LinkWrapper>
       <Options>
         {tags.map((tag) => (
-          <Tag key={tag}>{tag}</Tag>
+          <Tag
+            key={tag}
+            onClick={() => setSelectedTag(selectedTag === tag ? null : tag)}
+          >
+            {tag}
+          </Tag>
         ))}
       </Options>
     </Container>
@@ -99,6 +104,13 @@ LinkCard.propTypes = {
     url: string.isRequired,
     tags: arrayOf(string).isRequired,
   }).isRequired,
+  selectedTag: string,
+  setSelectedTag: func,
+}
+
+LinkCard.defaultProps = {
+  selectedTag: null,
+  setSelectedTag: () => {},
 }
 
 export default LinkCard
