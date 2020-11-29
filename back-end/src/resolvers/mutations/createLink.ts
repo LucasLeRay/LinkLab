@@ -33,7 +33,7 @@ async function createLink(
       img: meta.img,
       linkId: id,
       url: input.url,
-      tags: input.tags,
+      tags: [...new Set(input.tags)],
       createdAt: Date.now(),
     },
   }

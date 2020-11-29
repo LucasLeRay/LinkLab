@@ -1,5 +1,7 @@
 import styled from 'styled-components'
 import { string, arrayOf, shape, func } from 'prop-types'
+import EditIcon from '@material-ui/icons/Edit'
+import DeleteIcon from '@material-ui/icons/Delete'
 
 const Container = styled.div`
   position: relative;
@@ -49,7 +51,8 @@ const Title = styled.div`
   margin: auto;
 `
 
-const Options = styled.div`
+const Footer = styled.div`
+  width: calc(100% - 16px);
   position: absolute;
   bottom: 0;
   padding: 0 8px;
@@ -72,6 +75,35 @@ const LinkWrapper = styled.a`
   color: var(--color-grey-1);
 `
 
+const TagsWrapper = styled.div`
+  overflow: auto;
+  display: flex;
+  width: 100%;
+  margin-right: 8px;
+
+  ::-webkit-scrollbar {
+    display: none;
+  }
+`
+
+const Options = styled.div`
+  display: flex;
+  color: var(--color-grey-2);
+
+  svg {
+    cursor: pointer;
+    width: 24px;
+    height: 24px;
+  }
+`
+
+const Separator = styled.span`
+  height: 24px;
+  width: 1px;
+  margin: 0 8px;
+  background-color: var(--color-grey-2);
+`
+
 function LinkCard({ link, selectedTag, setSelectedTag }) {
   const { title, img, url, tags } = link
   return (
@@ -82,16 +114,23 @@ function LinkCard({ link, selectedTag, setSelectedTag }) {
           <BlackLayer />
         </Overlay>
       </LinkWrapper>
-      <Options>
-        {tags.map((tag) => (
-          <Tag
-            key={tag}
-            onClick={() => setSelectedTag(selectedTag === tag ? null : tag)}
-          >
-            {tag}
-          </Tag>
-        ))}
-      </Options>
+      <Footer>
+        <TagsWrapper>
+          {tags.map((tag) => (
+            <Tag
+              key={tag}
+              onClick={() => setSelectedTag(selectedTag === tag ? null : tag)}
+            >
+              {tag}
+            </Tag>
+          ))}
+        </TagsWrapper>
+        <Options>
+          <EditIcon />
+          <Separator />
+          <DeleteIcon />
+        </Options>
+      </Footer>
     </Container>
   )
 }
