@@ -1,5 +1,7 @@
 import links from './queries/links'
 import createLink from './mutations/createLink'
+import updateLink from './mutations/updateLink'
+import deleteLink from './mutations/deleteLink'
 
 export default {
   Query: {
@@ -7,8 +9,8 @@ export default {
   },
   Mutation: {
     createLink,
-    updateLink: () => {},
-    deleteLink: () => {},
+    updateLink,
+    deleteLink,
     updateTagIcon: () => {},
   },
 }

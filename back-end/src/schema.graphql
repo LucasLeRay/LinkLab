@@ -31,7 +31,7 @@ input CreateLinkInput {
 
 input UpdateLinkInput {
   id: ID!
-  categories: [String]
+  tags: [String]!
 }
 
 input DeleteLinkInput {

@@ -66,7 +66,7 @@ export type CreateLinkInput = {
 
 export type UpdateLinkInput = {
   id: Scalars['ID'];
-  categories?: Maybe<Array<Maybe<Scalars['String']>>>;
+  tags: Array<Maybe<Scalars['String']>>;
 };
 
 export type DeleteLinkInput = {

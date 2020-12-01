@@ -1,7 +1,10 @@
+import { useState } from 'react'
 import styled from 'styled-components'
 import { string, arrayOf, shape, func } from 'prop-types'
 import EditIcon from '@material-ui/icons/Edit'
 import DeleteIcon from '@material-ui/icons/Delete'
+
+import LinkFormModal from './LinkFormModal'
 
 const Container = styled.div`
   position: relative;
@@ -104,8 +107,16 @@ const Separator = styled.span`
   background-color: var(--color-grey-2);
 `
 
-function LinkCard({ link, selectedTag, setSelectedTag }) {
+function LinkCard({
+  link,
+  selectedTag,
+  setSelectedTag,
+  updateLink,
+  deleteLink,
+}) {
+  const [modal, setModal] = useState(false)
   const { title, img, url, tags } = link
+
   return (
     <Container>
       <LinkWrapper href={url} target="_blank" rel="noreferrer">
@@ -126,11 +137,21 @@ function LinkCard({ link, selectedTag, setSelectedTag }) {
           ))}
         </TagsWrapper>
         <Options>
-          <EditIcon />
+          <EditIcon onClick={() => setModal(true)} />
           <Separator />
-          <DeleteIcon />
+          <DeleteIcon onClick={deleteLink} />
         </Options>
       </Footer>
+      {modal && (
+        <LinkFormModal
+          onSubmit={({ tags: newTags }) => updateLink(newTags)}
+          closeModal={() => setModal(false)}
+          url={url}
+          tags={tags}
+          title={title}
+          update
+        />
+      )}
     </Container>
   )
 }
@@ -145,11 +166,15 @@ LinkCard.propTypes = {
   }).isRequired,
   selectedTag: string,
   setSelectedTag: func,
+  updateLink: func,
+  deleteLink: func,
 }
 
 LinkCard.defaultProps = {
   selectedTag: null,
   setSelectedTag: () => {},
+  updateLink: () => {},
+  deleteLink: () => {},
 }
 
 export default LinkCard

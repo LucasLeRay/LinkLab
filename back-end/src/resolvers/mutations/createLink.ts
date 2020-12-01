@@ -7,7 +7,7 @@ import scrapMetaData from '../../helpers/scrapMetaData'
 const dynamoDb = new AWS.DynamoDB.DocumentClient()
 
 async function createLink(
-  _: any,
+  _: unknown,
   { input }: { input: CreateLinkInput },
   context: any,
 ): Promise<Link> {

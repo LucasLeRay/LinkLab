@@ -5,7 +5,7 @@ import { Link } from '../../generated/schema'
 const dynamoDb = new AWS.DynamoDB.DocumentClient()
 
 async function links(
-  _: any,
+  _: unknown,
   { tag }: { tag: string },
   context: any,
 ): Promise<Array<Link>> {

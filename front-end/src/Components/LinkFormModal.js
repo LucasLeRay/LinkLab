@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { string, arrayOf, func } from 'prop-types'
+import { string, arrayOf, func, bool } from 'prop-types'
 import styled from 'styled-components'
 
 import Modal from './Modal'
@@ -46,11 +46,12 @@ const InputWrapper = styled.div`
 `
 
 function LinkFormModal({
-  id,
   url: defaultUrl,
   tags: defaultTags,
   closeModal,
   onSubmit,
+  update,
+  title,
   ...props
 }) {
   const [url, setUrl] = useState(defaultUrl)
@@ -62,7 +63,6 @@ function LinkFormModal({
         onSubmit={(e) => {
           e.preventDefault()
           onSubmit({
-            id,
             url,
             tags: tags
               .split(',')
@@ -72,12 +72,13 @@ function LinkFormModal({
           closeModal()
         }}
       >
-        <Title>New Link 🎉</Title>
+        <Title>{update ? title : 'New Link 🎉'}</Title>
         <InputWrapper>
           <Input
             label="Url"
             value={url}
             onChange={({ target }) => setUrl(target.value)}
+            disabled={update}
           />
           <Input
             label="Tags"
@@ -91,7 +92,7 @@ function LinkFormModal({
             Cancel
           </Button>
           <Button center primary type="submit">
-            Create
+            {update ? 'Update' : 'Create'}
           </Button>
         </ButtonWrapper>
       </Form>
@@ -100,17 +101,19 @@ function LinkFormModal({
 }
 
 LinkFormModal.propTypes = {
-  id: string,
   url: string,
   tags: arrayOf(string),
   closeModal: func.isRequired,
   onSubmit: func.isRequired,
+  update: bool,
+  title: string,
 }
 
 LinkFormModal.defaultProps = {
-  id: '',
   url: '',
   tags: [],
+  update: false,
+  title: '',
 }
 
 export default LinkFormModal

@@ -58,6 +58,26 @@ const CREATE_LINK = gql`
   }
 `
 
+const UPDATE_LINK = gql`
+  mutation updateLink($input: UpdateLinkInput!) {
+    updateLink(input: $input) {
+      id
+      title
+      img
+      url
+      tags
+    }
+  }
+`
+
+const DELETE_LINK = gql`
+  mutation updateLink($input: DeleteLinkInput!) {
+    deleteLink(input: $input) {
+      id
+    }
+  }
+`
+
 function Home() {
   const [selectedTag, setSelectedTag] = useState(null)
 
@@ -81,6 +101,21 @@ function Home() {
               `,
             })
             return [...existingLinks, newLinkRef]
+          },
+        },
+      })
+    },
+  })
+  const [updateLink] = useMutation(UPDATE_LINK)
+  const [deleteLink] = useMutation(DELETE_LINK, {
+    // eslint-disable-next-line no-shadow
+    update(cache, { data: { deleteLink } }) {
+      cache.modify({
+        fields: {
+          links(existingLinks = [], { readField }) {
+            return existingLinks.filter(
+              (link) => deleteLink.id !== readField('id', link),
+            )
           },
         },
       })
@@ -117,6 +152,25 @@ function Home() {
               setSelectedTag={setSelectedTag}
               key={link.id}
               link={link}
+              updateLink={(tags) => {
+                updateLink({
+                  variables: {
+                    input: {
+                      id: link.id,
+                      tags,
+                    },
+                  },
+                })
+              }}
+              deleteLink={() => {
+                deleteLink({
+                  variables: {
+                    input: {
+                      id: link.id,
+                    },
+                  },
+                })
+              }}
             />
           ))}
       </LinksContainer>
