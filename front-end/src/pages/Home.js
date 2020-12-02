@@ -140,6 +140,17 @@ function Home() {
                 tags,
               },
             },
+            optimisticResponse: {
+              __typename: 'Mutation',
+              createLink: {
+                __typename: 'Link',
+                id: 'new',
+                title: '',
+                img: '',
+                url,
+                tags,
+              },
+            },
           })
         }}
       />
@@ -160,12 +171,30 @@ function Home() {
                       tags,
                     },
                   },
+                  optimisticResponse: {
+                    __typename: 'Mutation',
+                    updateLink: {
+                      __typename: 'Link',
+                      id: link.id,
+                      title: link.title,
+                      img: link.img,
+                      url: link.url,
+                      tags,
+                    },
+                  },
                 })
               }}
               deleteLink={() => {
                 deleteLink({
                   variables: {
                     input: {
+                      id: link.id,
+                    },
+                  },
+                  optimisticResponse: {
+                    __typename: 'Mutation',
+                    deleteLink: {
+                      __typename: 'Link',
                       id: link.id,
                     },
                   },

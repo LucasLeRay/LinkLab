@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import styled from 'styled-components'
 import { string, arrayOf, shape, func } from 'prop-types'
+import { PulseLoader } from 'react-spinners'
 import EditIcon from '@material-ui/icons/Edit'
 import DeleteIcon from '@material-ui/icons/Delete'
 
@@ -120,7 +121,13 @@ function LinkCard({
   return (
     <Container>
       <LinkWrapper href={url} target="_blank" rel="noreferrer">
-        <Title>{title}</Title>
+        <Title>
+          {link.id === 'new' ? (
+            <PulseLoader size={10} margin={10} color="#ffffff" />
+          ) : (
+            title
+          )}
+        </Title>
         <Overlay img={img}>
           <BlackLayer />
         </Overlay>
