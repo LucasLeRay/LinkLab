@@ -7,6 +7,7 @@
   "scripts": {
     "schema-type": "graphql-codegen --config codegen.yml",
     "build": "npm run schema-type && tsc",
+    "watch": "npm run schema-type && tsc -w",
     "start": "sls offline --httpPort 3001",
     "deploy": "npm run build && serverless deploy"
   },
