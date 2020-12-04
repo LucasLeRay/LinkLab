@@ -27,6 +27,7 @@ const LinksContainer = styled.div`
   position: relative;
   width: 100%;
   padding: 64px;
+  overflow: auto;
 `
 
 function getCategories(links) {
@@ -81,6 +82,7 @@ const DELETE_LINK = gql`
 
 function Home() {
   const [selectedTag, setSelectedTag] = useState(null)
+  const [search, setSearch] = useState('')
 
   const { loading, data } = useQuery(LINKS)
   const [createLink] = useMutation(CREATE_LINK, {
@@ -133,6 +135,8 @@ function Home() {
         categories={getCategories(data.links)}
         selectedTag={selectedTag}
         setSelectedTag={setSelectedTag}
+        search={search}
+        setSearch={setSearch}
         createLink={({ url, tags }) => {
           createLink({
             variables: {
@@ -158,6 +162,12 @@ function Home() {
       <LinksContainer>
         {data.links
           .filter((link) => !selectedTag || link.tags.includes(selectedTag))
+          .filter(
+            (link) =>
+              !search ||
+              link.title?.includes(search) ||
+              link.url?.includes(search),
+          )
           .map((link) => (
             <LinkCard
               selectedTag={selectedTag}

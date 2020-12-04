@@ -49,7 +49,14 @@ const Header = styled.div`
   }
 `
 
-function Sidebar({ categories, createLink, selectedTag, setSelectedTag }) {
+function Sidebar({
+  categories,
+  createLink,
+  selectedTag,
+  setSelectedTag,
+  search,
+  setSearch,
+}) {
   const { handleLogout } = useContext(Context)
   const [modal, setModal] = useState(false)
 
@@ -59,7 +66,12 @@ function Sidebar({ categories, createLink, selectedTag, setSelectedTag }) {
         <h1>LOGO</h1>
         <LogoutIcon onClick={handleLogout} />
       </Header>
-      <Input icon={<SearchIcon />} placeholder="Find anything" />
+      <Input
+        icon={<SearchIcon />}
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+        placeholder="Find anything"
+      />
       <Button primary icon={<AddIcon />} onClick={() => setModal(true)}>
         New Link
       </Button>
@@ -90,12 +102,15 @@ function Sidebar({ categories, createLink, selectedTag, setSelectedTag }) {
 Sidebar.propTypes = {
   selectedTag: string,
   setSelectedTag: func.isRequired,
+  search: string,
+  setSearch: func.isRequired,
   categories: arrayOf(string).isRequired,
   createLink: func.isRequired,
 }
 
 Sidebar.defaultProps = {
   selectedTag: null,
+  search: '',
 }
 
 export default Sidebar

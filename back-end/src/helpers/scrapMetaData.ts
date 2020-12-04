@@ -21,7 +21,7 @@ export default async (url: string): Promise<{ title: string; img: string }> => {
     const firstImg = $('img').first().attr('src')
 
     const img = rel || og || twitter || firstImg
-    return img[0] === '/' ? `${new URL(url)}${img.slice(1)}` : img
+    return img?.[0] === '/' ? `${new URL(url)}${img.slice(1)}` : img
   }
 
   return {
