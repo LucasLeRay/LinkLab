@@ -42,17 +42,21 @@ const BlackLayer = styled.div`
 `
 
 const Title = styled.div`
+  text-align: center;
+  padding: 0 8px;
   z-index: 1;
   position: absolute;
   display: flex;
   align-items: center;
   justify-content: center;
   height: 144px;
-  width: 288px;
+  width: 272px;
   font-weight: 700;
   font-family: var(--font-head);
   font-size: 24px;
   margin: auto;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `
 
 const Footer = styled.div`

@@ -22,7 +22,8 @@ const LoadingWrapper = styled.div`
 
 const LinksContainer = styled.div`
   display: flex;
-  justify-content: space-between;
+  flex-wrap: wrap;
+  align-content: flex-start;
   position: relative;
   width: 100%;
   padding: 64px;
