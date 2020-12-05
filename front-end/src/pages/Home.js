@@ -28,6 +28,14 @@ const LinksContainer = styled.div`
   width: 100%;
   padding: 64px;
   overflow: auto;
+
+  @media (max-width: 1050px) {
+    justify-content: center;
+  }
+
+  @media (max-width: 1200px) {
+    padding: 24px;
+  }
 `
 
 function getCategories(links) {

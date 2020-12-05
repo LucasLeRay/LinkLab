@@ -20,6 +20,11 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   background-color: var(--color-grey-5);
+
+  @media (max-width: 800px) {
+    min-width: 256px;
+    width: 256px;
+  }
 `
 
 const CategoriesSubtitle = styled.p`
