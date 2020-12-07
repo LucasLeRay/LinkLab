@@ -9,6 +9,7 @@ import Input from './Input'
 import Button from './Button'
 import Context from '../Context'
 import LinkFormModal from './LinkFormModal'
+import useWindowSize from '../hooks/useWindowSize'
 
 const Container = styled.div`
   top: 0;
@@ -16,14 +17,19 @@ const Container = styled.div`
   padding: 8px;
   width: 304px;
   min-width: 304px;
-  height: calc(100vh - 16px);
   display: flex;
   flex-direction: column;
   background-color: var(--color-grey-5);
 
   @media (max-width: 800px) {
-    min-width: 256px;
-    width: 256px;
+    width: 240px;
+    min-width: 240px;
+  }
+
+  @media (max-width: 600px) {
+    width: 100%;
+    padding: 24px;
+    background-color: var(--color-grey-6);
   }
 `
 
@@ -64,6 +70,7 @@ function Sidebar({
 }) {
   const { handleLogout } = useContext(Context)
   const [modal, setModal] = useState(false)
+  const { width } = useWindowSize()
 
   return (
     <Container>
@@ -71,15 +78,19 @@ function Sidebar({
         <h1>LOGO</h1>
         <LogoutIcon onClick={handleLogout} />
       </Header>
-      <Input
-        icon={<SearchIcon />}
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-        placeholder="Find anything"
-      />
-      <Button primary icon={<AddIcon />} onClick={() => setModal(true)}>
-        New Link
-      </Button>
+      {width > 600 && (
+        <>
+          <Input
+            icon={<SearchIcon />}
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="Find anything"
+          />
+          <Button primary icon={<AddIcon />} onClick={() => setModal(true)}>
+            New Link
+          </Button>
+        </>
+      )}
       <CategoriesSubtitle>All categories</CategoriesSubtitle>
       {categories.map((category) => (
         <Button

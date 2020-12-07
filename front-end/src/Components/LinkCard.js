@@ -16,6 +16,11 @@ const Container = styled.div`
   margin: 24px;
   background-color: var(--color-grey-4);
   border-radius: 10px;
+
+  @media (max-width: 1000px) {
+    width: 240px;
+    height: 168px;
+  }
 `
 
 const Overlay = styled.div`
@@ -29,6 +34,11 @@ const Overlay = styled.div`
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+
+  @media (max-width: 1000px) {
+    width: 240px;
+    height: 120px;
+  }
 `
 
 const BlackLayer = styled.div`
@@ -39,6 +49,11 @@ const BlackLayer = styled.div`
   left: 0;
   height: 144px;
   width: 288px;
+
+  @media (max-width: 1000px) {
+    width: 240px;
+    height: 120px;
+  }
 `
 
 const Title = styled.div`
@@ -57,6 +72,12 @@ const Title = styled.div`
   margin: auto;
   overflow: hidden;
   text-overflow: ellipsis;
+
+  @media (max-width: 1000px) {
+    width: 224px;
+    height: 120px;
+    font-size: 20px;
+  }
 `
 
 const Footer = styled.div`
