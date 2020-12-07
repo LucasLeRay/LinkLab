@@ -27,7 +27,8 @@ const Container = styled.div`
   }
 
   @media (max-width: 600px) {
-    width: 100%;
+    width: calc(100% - 48px);
+    height: 100%;
     padding: 24px;
     background-color: var(--color-grey-6);
   }
