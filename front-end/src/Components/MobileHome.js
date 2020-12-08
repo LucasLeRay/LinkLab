@@ -5,6 +5,8 @@ import styled from 'styled-components'
 import Sidebar from './Sidebar'
 import LinkCard from './LinkCard'
 import MobileFooter from './MobileFooter'
+import LinkFormModal from './LinkFormModal'
+import Input from './Input'
 
 const Container = styled.div`
   display: flex;
@@ -25,6 +27,18 @@ const LinksContainer = styled.div`
   justify-content: center;
 `
 
+const SearchWrapper = styled.div`
+  background-color: var(--color-grey-5);
+  display: flex;
+  height: 64px;
+  width: calc(100% - 16px);
+  padding: 8px;
+
+  > div {
+    width: 100%;
+  }
+`
+
 function MobileHome({
   categories,
   links,
@@ -37,6 +51,14 @@ function MobileHome({
   deleteLink,
 }) {
   const [mobilePage, setMobilePage] = useState('home')
+  const [createModal, setCreateModal] = useState(false)
+  const [searchModal, setSearchModal] = useState(false)
+
+  function getSelectedPage() {
+    if (createModal) return 'add'
+    if (searchModal) return 'search'
+    return mobilePage
+  }
 
   return (
     <Container>
@@ -48,9 +70,6 @@ function MobileHome({
             setSelectedTag(tag)
             setMobilePage('links')
           }}
-          search={search}
-          setSearch={setSearch}
-          createLink={createLink}
         />
       )}
       {mobilePage === 'links' && (
@@ -66,7 +85,10 @@ function MobileHome({
             .map((link) => (
               <LinkCard
                 selectedTag={selectedTag}
-                setSelectedTag={setSelectedTag}
+                setSelectedTag={(tag) => {
+                  if (tag) setSelectedTag(tag)
+                }}
+                lala={setSearch}
                 key={link.id}
                 link={link}
                 updateLink={(tags) => updateLink(link, tags)}
@@ -75,19 +97,37 @@ function MobileHome({
             ))}
         </LinksContainer>
       )}
+      {createModal && (
+        <LinkFormModal
+          onSubmit={createLink}
+          closeModal={() => {
+            setCreateModal(false)
+          }}
+        />
+      )}
+      {searchModal && (
+        <SearchWrapper>
+          <Input
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="Find anything"
+          />
+        </SearchWrapper>
+      )}
       <MobileFooter
-        selected={mobilePage}
+        selected={getSelectedPage()}
         onClickHome={() => {
           setMobilePage('home')
           setSelectedTag('')
+          setSearchModal(false)
         }}
         onClickAdd={() => {
-          setMobilePage('add')
-          setSelectedTag('')
+          setCreateModal(true)
+          setSearchModal(false)
         }}
         onClickSearch={() => {
-          setMobilePage('search')
-          setSelectedTag('')
+          setMobilePage('links')
+          setSearchModal(!searchModal)
         }}
       />
     </Container>

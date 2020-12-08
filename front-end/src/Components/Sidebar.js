@@ -120,14 +120,16 @@ Sidebar.propTypes = {
   selectedTag: string,
   setSelectedTag: func.isRequired,
   search: string,
-  setSearch: func.isRequired,
+  setSearch: func,
   categories: arrayOf(string).isRequired,
-  createLink: func.isRequired,
+  createLink: func,
 }
 
 Sidebar.defaultProps = {
   selectedTag: null,
   search: '',
+  setSearch: () => {},
+  createLink: () => {},
 }
 
 export default Sidebar

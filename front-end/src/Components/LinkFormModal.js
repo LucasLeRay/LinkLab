@@ -12,6 +12,10 @@ const Form = styled.form`
   flex-direction: column;
   width: 448px;
   height: 328px;
+
+  @media (max-width: 600px) {
+    width: 300px;
+  }
 `
 
 const ButtonWrapper = styled.div`
