@@ -12,6 +12,7 @@ import Landing from './pages/Landing'
 import Home from './pages/Home'
 import Register from './pages/Register'
 import Login from './pages/Login'
+import Board from './pages/Board'
 import Context from './Context'
 import apolloHttpLink from './helpers/apolloHttpLink'
 
@@ -55,6 +56,7 @@ function App() {
             {!user && <Route path="/" exact component={Landing} />}
             {!user && <Route path="/register" exact component={Register} />}
             {!user && <Route path="/login" exact component={Login} />}
+            <Route path="/:userId/:tag" exact component={Board} />
             <Redirect to="/" />
           </Switch>
         </Router>

@@ -15,6 +15,12 @@ export type Query = {
   tags?: Maybe<Array<Maybe<Tag>>>;
 };
 
+
+export type QueryLinksArgs = {
+  tag?: Maybe<Scalars['String']>;
+  userId?: Maybe<Scalars['String']>;
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   createLink?: Maybe<Link>;

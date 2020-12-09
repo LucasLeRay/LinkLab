@@ -25,10 +25,10 @@ const Container = styled.div`
 
 const Overlay = styled.div`
   position: absolute;
-  border-radius: 10px 10px 0 0;
+  border-radius: ${(props) => (props.full ? '10px 10px' : '10px 10px 0 0')};
   top: 0;
   left: 0;
-  height: 144px;
+  height: ${(props) => (props.full ? '192' : '144')}px;
   width: 288px;
   background: ${(props) => (props.img ? `url('${props.img}')` : '#fff')};
   background-size: cover;
@@ -37,22 +37,22 @@ const Overlay = styled.div`
 
   @media (max-width: 1000px) {
     width: 240px;
-    height: 120px;
+    height: ${(props) => (props.full ? '168' : '120')}px;
   }
 `
 
 const BlackLayer = styled.div`
   background-color: rgba(0, 0, 0, 0.72);
-  border-radius: 10px 10px 0 0;
+  border-radius: ${(props) => (props.full ? '10px 10px' : '10px 10px 0 0')};
   position: absolute;
   top: 0;
   left: 0;
-  height: 144px;
+  height: ${(props) => (props.full ? '192' : '144')}px;
   width: 288px;
 
   @media (max-width: 1000px) {
     width: 240px;
-    height: 120px;
+    height: ${(props) => (props.full ? '168' : '120')}px;
   }
 `
 
@@ -64,7 +64,7 @@ const Title = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 144px;
+  height: ${(props) => (props.full ? '192' : '144')}px;
   width: 272px;
   font-weight: 700;
   font-family: var(--font-head);
@@ -75,7 +75,7 @@ const Title = styled.div`
 
   @media (max-width: 1000px) {
     width: 224px;
-    height: 120px;
+    height: ${(props) => (props.full ? '168' : '120')}px;
     font-size: 20px;
   }
 `
@@ -142,38 +142,41 @@ function LinkCard({
 }) {
   const [modal, setModal] = useState(false)
   const { title, img, url, tags } = link
+  const displayFooter = setSelectedTag && updateLink && deleteLink
 
   return (
     <Container>
       <LinkWrapper href={url} target="_blank" rel="noreferrer">
-        <Title>
+        <Title full={!displayFooter}>
           {link.id === 'new' ? (
             <PulseLoader size={10} margin={10} color="#ffffff" />
           ) : (
             title
           )}
         </Title>
-        <Overlay img={img}>
-          <BlackLayer />
+        <Overlay full={!displayFooter} img={img}>
+          <BlackLayer full={!displayFooter} />
         </Overlay>
       </LinkWrapper>
-      <Footer>
-        <TagsWrapper>
-          {tags.map((tag) => (
-            <Tag
-              key={tag}
-              onClick={() => setSelectedTag(selectedTag === tag ? null : tag)}
-            >
-              {tag}
-            </Tag>
-          ))}
-        </TagsWrapper>
-        <Options>
-          <EditIcon onClick={() => setModal(true)} />
-          <Separator />
-          <DeleteIcon onClick={deleteLink} />
-        </Options>
-      </Footer>
+      {displayFooter && (
+        <Footer>
+          <TagsWrapper>
+            {tags.map((tag) => (
+              <Tag
+                key={tag}
+                onClick={() => setSelectedTag(selectedTag === tag ? null : tag)}
+              >
+                {tag}
+              </Tag>
+            ))}
+          </TagsWrapper>
+          <Options>
+            <EditIcon onClick={() => setModal(true)} />
+            <Separator />
+            <DeleteIcon onClick={deleteLink} />
+          </Options>
+        </Footer>
+      )}
       {modal && (
         <LinkFormModal
           onSubmit={({ tags: newTags }) => updateLink(newTags)}
@@ -204,9 +207,9 @@ LinkCard.propTypes = {
 
 LinkCard.defaultProps = {
   selectedTag: null,
-  setSelectedTag: () => {},
-  updateLink: () => {},
-  deleteLink: () => {},
+  setSelectedTag: null,
+  updateLink: null,
+  deleteLink: null,
 }
 
 export default LinkCard
