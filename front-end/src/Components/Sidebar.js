@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import AddIcon from '@material-ui/icons/Add'
 import LogoutIcon from '@material-ui/icons/PowerSettingsNew'
 import SearchIcon from '@material-ui/icons/Search'
+import ShareIcon from '@material-ui/icons/ShareOutlined'
 
 import Input from './Input'
 import Button from './Button'
@@ -95,6 +96,15 @@ function Sidebar({
       <CategoriesSubtitle>All categories</CategoriesSubtitle>
       {categories.map((category) => (
         <Button
+          options={[
+            {
+              name: 'Share',
+              icon: <ShareIcon />,
+              action: () => {
+                console.log('share')
+              },
+            },
+          ]}
           selected={selectedTag === category}
           key={category}
           onClick={() => {

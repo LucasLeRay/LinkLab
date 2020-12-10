@@ -1,5 +1,6 @@
 import styled from 'styled-components'
-import { shape, oneOfType, string, arrayOf, node, bool } from 'prop-types'
+import { shape, oneOfType, string, arrayOf, node, bool, func } from 'prop-types'
+import { cloneElement } from 'react'
 
 function backgroundColor({ selected, primary }) {
   if (selected) return '--color-grey-3'
@@ -8,6 +9,7 @@ function backgroundColor({ selected, primary }) {
 }
 
 const StyledButton = styled.button`
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: ${({ center }) => (center ? 'center' : 'baseline')};
@@ -31,6 +33,10 @@ const StyledButton = styled.button`
 
   &:hover {
     background-color: ${({ primary }) => !primary && 'var(--color-grey-3)'};
+
+    svg {
+      display: block;
+    }
   }
 `
 
@@ -51,6 +57,23 @@ const IconWrapper = styled.div`
   }
 `
 
+const OptionsWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  position: absolute;
+  right: 16px;
+  color: var(--color-grey-2);
+
+  svg {
+    display: none;
+    font-size: 24px;
+
+    &:hover {
+      color: var(--color-grey-1);
+    }
+  }
+`
+
 function Button({
   icon,
   emoji,
@@ -58,6 +81,7 @@ function Button({
   center,
   selected,
   children,
+  options,
   ...props
 }) {
   return (
@@ -71,6 +95,19 @@ function Button({
       {emoji && <EmojiWrapper>{emoji}</EmojiWrapper>}
       {icon && <IconWrapper>{icon}</IconWrapper>}
       {children}
+      {!!options.length && (
+        <OptionsWrapper>
+          {options.map((option) =>
+            cloneElement(option.icon, {
+              onClick: (e) => {
+                e.stopPropagation()
+                option.action()
+              },
+              key: option.name,
+            }),
+          )}
+        </OptionsWrapper>
+      )}
     </StyledButton>
   )
 }
@@ -82,6 +119,13 @@ Button.propTypes = {
   center: bool,
   selected: bool,
   children: oneOfType([arrayOf(node), node]).isRequired,
+  options: arrayOf(
+    shape({
+      name: string,
+      icon: shape({}),
+      action: func,
+    }),
+  ),
 }
 
 Button.defaultProps = {
@@ -90,6 +134,7 @@ Button.defaultProps = {
   primary: false,
   center: false,
   selected: false,
+  options: [],
 }
 
 export default Button
