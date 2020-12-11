@@ -28,7 +28,6 @@ functions:
       - http:
           path: graphql
           method: any
-          cors: true
 
 package:
   individually: true

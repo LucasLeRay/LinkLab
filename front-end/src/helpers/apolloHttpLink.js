@@ -6,6 +6,9 @@ import config from '../config'
 
 const httpLink = createHttpLink({
   uri: config.graphqlEndpoint,
+  fetchOptions: {
+    mode: 'no-cors',
+  },
 })
 
 const authLink = setContext(async (_, { headers }) => {
