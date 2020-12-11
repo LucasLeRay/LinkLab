@@ -36,7 +36,7 @@ const server = new ApolloServer({
 
 export const handler = server.createHandler({
   cors: {
-    origin: '*',
+    origin: 'https://linklab.app',
     credentials: true,
   },
 })
