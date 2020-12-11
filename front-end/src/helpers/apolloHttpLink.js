@@ -26,7 +26,6 @@ const authLink = setContext(async (_, { headers }) => {
     headers: {
       ...headers,
       authorization: jwt ? `Bearer ${jwt}` : '',
-      'Access-Control-Allow-Credentials': true,
     },
   }
 })
