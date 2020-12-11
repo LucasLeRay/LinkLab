@@ -11,6 +11,7 @@ import Button from './Button'
 import Context from '../Context'
 import LinkFormModal from './LinkFormModal'
 import useWindowSize from '../hooks/useWindowSize'
+import copyClipboard from '../helpers/copyClipboard'
 
 const Container = styled.div`
   top: 0;
@@ -70,7 +71,7 @@ function Sidebar({
   search,
   setSearch,
 }) {
-  const { handleLogout } = useContext(Context)
+  const { user, handleLogout, setToast } = useContext(Context)
   const [modal, setModal] = useState(false)
   const { width } = useWindowSize()
 
@@ -100,8 +101,9 @@ function Sidebar({
             {
               name: 'Share',
               icon: <ShareIcon />,
-              action: () => {
-                console.log('share')
+              action: async () => {
+                await copyClipboard(user.sub, category)
+                setToast('Link has been copied in clipboard')
               },
             },
           ]}

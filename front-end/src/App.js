@@ -15,6 +15,7 @@ import Login from './pages/Login'
 import Board from './pages/Board'
 import Context from './Context'
 import apolloHttpLink from './helpers/apolloHttpLink'
+import Toast from './Components/Toast'
 
 const client = new ApolloClient({
   link: apolloHttpLink,
@@ -24,6 +25,7 @@ const client = new ApolloClient({
 function App() {
   const [user, setUser] = useState(null)
   const [loading, setLoading] = useState(true)
+  const [toast, setToast] = useState(null)
 
   async function handleLogout() {
     await Auth.signOut()
@@ -49,7 +51,9 @@ function App() {
 
   return loading ? null : (
     <ApolloProvider client={client}>
-      <Context.Provider value={{ user, handleLogin, handleLogout }}>
+      <Context.Provider
+        value={{ toast, setToast, user, handleLogin, handleLogout }}
+      >
         <Router>
           <Switch>
             {user && <Route path="/" exact component={Home} />}
@@ -60,6 +64,7 @@ function App() {
             <Redirect to="/" />
           </Switch>
         </Router>
+        {toast && <Toast />}
       </Context.Provider>
     </ApolloProvider>
   )
