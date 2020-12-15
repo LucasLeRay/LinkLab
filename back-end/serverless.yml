@@ -7,6 +7,7 @@ provider:
   region: us-east-1
   environment:
     LINK_TABLE: ${self:service}-links-${self:provider.stage}
+    CATEGORY_TABLE: ${self:service}-categories-${self:provider.stage}
   iamRoleStatements:
     - Effect: Allow
       Action:
@@ -17,7 +18,9 @@ provider:
         - dynamodb:UpdateItem
         - dynamodb:DeleteItem
         - dynamodb:DescribeTable
-      Resource: 'arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.LINK_TABLE}'
+      Resource:
+        - 'arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.LINK_TABLE}'
+        - 'arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.CATEGORY_TABLE}'
   apiGateway:
     shouldStartNameWithService: true
 

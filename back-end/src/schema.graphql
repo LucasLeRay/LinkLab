@@ -1,13 +1,13 @@
 type Query {
   links(tag: String, userId: String): [Link]
-  tags: [Tag]
+  categories: [Category]
 }
 
 type Mutation {
   createLink(input: CreateLinkInput!): Link
   updateLink(input: UpdateLinkInput!): Link
   deleteLink(input: DeleteLinkInput!): Link
-  updateTagIcon(input: UpdateTagIconInput!): Tag
+  updateTagIcon(input: UpdateCategoryIconInput!): Category
 }
 
 type Link {
@@ -18,10 +18,9 @@ type Link {
   tags: [String]!
 }
 
-type Tag {
+type Category {
   name: String!
   icon: String
-  links: [Link]!
 }
 
 input CreateLinkInput {
@@ -38,7 +37,7 @@ input DeleteLinkInput {
   id: ID!
 }
 
-input UpdateTagIconInput {
-  category: String!
-  icon: String
+input UpdateCategoryIconInput {
+  name: String!
+  icon: String!
 }

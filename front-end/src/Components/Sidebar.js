@@ -107,6 +107,7 @@ function Sidebar({
               },
             },
           ]}
+          emoji="🧪"
           selected={selectedTag === category}
           key={category}
           onClick={() => {
