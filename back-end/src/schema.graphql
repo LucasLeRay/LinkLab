@@ -7,7 +7,7 @@ type Mutation {
   createLink(input: CreateLinkInput!): Link
   updateLink(input: UpdateLinkInput!): Link
   deleteLink(input: DeleteLinkInput!): Link
-  updateTagIcon(input: UpdateCategoryIconInput!): Category
+  updateCategoryIcon(input: UpdateCategoryIconInput!): Category
 }
 
 type Link {
@@ -19,6 +19,7 @@ type Link {
 }
 
 type Category {
+  id: ID!
   name: String!
   icon: String
 }

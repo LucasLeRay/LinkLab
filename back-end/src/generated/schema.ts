@@ -26,7 +26,7 @@ export type Mutation = {
   createLink?: Maybe<Link>;
   updateLink?: Maybe<Link>;
   deleteLink?: Maybe<Link>;
-  updateTagIcon?: Maybe<Category>;
+  updateCategoryIcon?: Maybe<Category>;
 };
 
 
@@ -45,7 +45,7 @@ export type MutationDeleteLinkArgs = {
 };
 
 
-export type MutationUpdateTagIconArgs = {
+export type MutationUpdateCategoryIconArgs = {
   input: UpdateCategoryIconInput;
 };
 
@@ -60,6 +60,7 @@ export type Link = {
 
 export type Category = {
   __typename?: 'Category';
+  id: Scalars['ID'];
   name: Scalars['String'];
   icon?: Maybe<Scalars['String']>;
 };

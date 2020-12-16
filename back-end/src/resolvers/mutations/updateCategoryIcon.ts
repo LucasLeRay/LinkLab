@@ -27,7 +27,10 @@ async function updateCategoryIcon(
 
   await dynamoDb.update(params).promise()
 
-  return input
+  return {
+    id: `${user.Username}:${input.name}`,
+    ...input,
+  }
 }
 
 export default updateCategoryIcon

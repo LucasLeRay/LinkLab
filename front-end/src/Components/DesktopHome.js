@@ -78,7 +78,12 @@ function DesktopHome({
 }
 
 DesktopHome.propTypes = {
-  categories: arrayOf(string).isRequired,
+  categories: arrayOf(
+    shape({
+      name: string,
+      icon: string,
+    }),
+  ).isRequired,
   links: arrayOf(
     shape({
       id: string,

@@ -1,6 +1,7 @@
 import { useContext, useState } from 'react'
-import { arrayOf, string, func } from 'prop-types'
+import { arrayOf, string, func, shape } from 'prop-types'
 import styled from 'styled-components'
+import { gql, useMutation } from '@apollo/client'
 import AddIcon from '@material-ui/icons/Add'
 import LogoutIcon from '@material-ui/icons/PowerSettingsNew'
 import SearchIcon from '@material-ui/icons/Search'
@@ -12,6 +13,16 @@ import Context from '../Context'
 import LinkFormModal from './LinkFormModal'
 import useWindowSize from '../hooks/useWindowSize'
 import copyClipboard from '../helpers/copyClipboard'
+
+const UPDATE_CATEGORY_ICON = gql`
+  mutation updateCategoryIcon($input: UpdateCategoryIconInput!) {
+    updateCategoryIcon(input: $input) {
+      id
+      name
+      icon
+    }
+  }
+`
 
 const Container = styled.div`
   top: 0;
@@ -75,6 +86,29 @@ function Sidebar({
   const [modal, setModal] = useState(false)
   const { width } = useWindowSize()
 
+  const [updateCategoryIcon] = useMutation(UPDATE_CATEGORY_ICON, {
+    // eslint-disable-next-line no-shadow
+    update(cache, { data: { updateCategoryIcon } }) {
+      cache.modify({
+        fields: {
+          categories(existingCategories = []) {
+            const newCategoryRef = cache.writeFragment({
+              data: updateCategoryIcon,
+              fragment: gql`
+                fragment NewCategory on Category {
+                  id
+                  name
+                  icon
+                }
+              `,
+            })
+            return [...existingCategories, newCategoryRef]
+          },
+        },
+      })
+    },
+  })
+
   return (
     <Container>
       <Header>
@@ -107,14 +141,33 @@ function Sidebar({
               },
             },
           ]}
-          emoji="🧪"
-          selected={selectedTag === category}
-          key={category}
+          emoji={category.icon}
+          selected={selectedTag === category.name}
+          key={category.name}
           onClick={() => {
-            setSelectedTag(selectedTag === category ? null : category)
+            setSelectedTag(selectedTag === category.name ? null : category.name)
+          }}
+          changeEmoji={(emoji) => {
+            updateCategoryIcon({
+              variables: {
+                input: {
+                  name: category.name,
+                  icon: emoji,
+                },
+              },
+              optimisticResponse: {
+                __typename: 'Mutation',
+                updateCategoryIcon: {
+                  __typename: 'Category',
+                  id: category.id || 'new',
+                  name: category.name,
+                  icon: emoji,
+                },
+              },
+            })
           }}
         >
-          {category}
+          {category.name}
         </Button>
       ))}
       {modal && (
@@ -134,7 +187,12 @@ Sidebar.propTypes = {
   setSelectedTag: func.isRequired,
   search: string,
   setSearch: func,
-  categories: arrayOf(string).isRequired,
+  categories: arrayOf(
+    shape({
+      name: string,
+      icon: string,
+    }),
+  ).isRequired,
   createLink: func,
 }
 

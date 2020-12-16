@@ -6,7 +6,7 @@ const dynamoDb = new AWS.DynamoDB.DocumentClient()
 
 async function categories(
   _: unknown,
-  { tag, userId }: { tag: string; userId: string },
+  input: unknown,
   context: any,
 ): Promise<Array<Category>> {
   const { user } = context
@@ -23,6 +23,7 @@ async function categories(
   const result = await dynamoDb.query(params).promise()
 
   return result.Items.map(({ name, icon }) => ({
+    id: `${user.Username}:${name}`,
     name,
     icon,
   }))

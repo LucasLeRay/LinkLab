@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 import { shape, oneOfType, string, arrayOf, node, bool, func } from 'prop-types'
-import { cloneElement } from 'react'
+import { cloneElement, useState } from 'react'
+import Picker from 'emoji-picker-react'
 
 function backgroundColor({ selected, primary }) {
   if (selected) return '--color-grey-3'
@@ -45,6 +46,12 @@ const EmojiWrapper = styled.div`
   margin-left: 8px;
   margin-right: 11px;
   font-size: 18px;
+  padding: 2px;
+  border-radius: 2px;
+
+  &:hover {
+    background-color: ${({ hoverable }) => hoverable && 'var(--color-grey-2)'};
+  }
 `
 
 const IconWrapper = styled.div`
@@ -74,6 +81,15 @@ const OptionsWrapper = styled.div`
   }
 `
 
+const PickerWrapper = styled.div`
+  margin-left: 8px;
+
+  .emoji-picker-react {
+    box-shadow: none;
+    width: 288px;
+  }
+`
+
 function Button({
   icon,
   emoji,
@@ -82,33 +98,62 @@ function Button({
   selected,
   children,
   options,
+  changeEmoji,
   ...props
 }) {
+  const [selectEmoji, setSelectEmoji] = useState(false)
+
   return (
-    <StyledButton
-      icon={icon || emoji}
-      primary={primary}
-      center={center}
-      selected={selected}
-      {...props}
-    >
-      {emoji && <EmojiWrapper>{emoji}</EmojiWrapper>}
-      {icon && <IconWrapper>{icon}</IconWrapper>}
-      {children}
-      {!!options.length && (
-        <OptionsWrapper>
-          {options.map((option) =>
-            cloneElement(option.icon, {
-              onClick: (e) => {
-                e.stopPropagation()
-                option.action()
-              },
-              key: option.name,
-            }),
-          )}
-        </OptionsWrapper>
+    <>
+      <StyledButton
+        icon={icon || emoji}
+        primary={primary}
+        center={center}
+        selected={selected}
+        {...props}
+      >
+        {emoji && (
+          <EmojiWrapper
+            onClick={
+              changeEmoji
+                ? (e) => {
+                    e.stopPropagation()
+                    setSelectEmoji(!selectEmoji)
+                  }
+                : () => {}
+            }
+            hoverable={!!changeEmoji}
+          >
+            {emoji}
+          </EmojiWrapper>
+        )}
+        {icon && <IconWrapper>{icon}</IconWrapper>}
+        {children}
+        {!!options.length && (
+          <OptionsWrapper>
+            {options.map((option) =>
+              cloneElement(option.icon, {
+                onClick: (e) => {
+                  e.stopPropagation()
+                  option.action()
+                },
+                key: option.name,
+              }),
+            )}
+          </OptionsWrapper>
+        )}
+      </StyledButton>
+      {!!selectEmoji && (
+        <PickerWrapper>
+          <Picker
+            onEmojiClick={(event, emojiObject) => {
+              setSelectEmoji(false)
+              changeEmoji(emojiObject.emoji)
+            }}
+          />
+        </PickerWrapper>
       )}
-    </StyledButton>
+    </>
   )
 }
 
@@ -126,6 +171,7 @@ Button.propTypes = {
       action: func,
     }),
   ),
+  changeEmoji: func,
 }
 
 Button.defaultProps = {
@@ -135,6 +181,7 @@ Button.defaultProps = {
   center: false,
   selected: false,
   options: [],
+  changeEmoji: null,
 }
 
 export default Button

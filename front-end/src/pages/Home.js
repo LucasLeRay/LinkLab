@@ -15,14 +15,29 @@ const LoadingWrapper = styled.div`
   height: 100vh;
 `
 
-function getCategories(links) {
-  return links.reduce((acc, { tags }) => {
-    return [...acc, ...tags.filter((tag) => !acc.includes(tag))]
-  }, [])
+function getCategories(links, dbCategories) {
+  return links
+    .reduce((acc, { tags }) => {
+      return [...acc, ...tags.filter((tag) => !acc.includes(tag))]
+    }, [])
+    .map((category) => {
+      const existing = dbCategories.find((element) => element.name === category)
+
+      return {
+        name: category,
+        id: existing ? existing.id : undefined,
+        icon: existing ? existing.icon : '🧪',
+      }
+    })
 }
 
 const LINKS = gql`
   query getLinks {
+    categories {
+      id
+      name
+      icon
+    }
     links {
       id
       title
@@ -181,7 +196,7 @@ function Home() {
 
   return width > 600 ? (
     <DesktopHome
-      categories={getCategories(data.links)}
+      categories={getCategories(data.links, data.categories)}
       links={data.links}
       selectedTag={selectedTag}
       setSelectedTag={setSelectedTag}
@@ -193,7 +208,7 @@ function Home() {
     />
   ) : (
     <MobileHome
-      categories={getCategories(data.links)}
+      categories={getCategories(data.links, data.categories)}
       links={data.links}
       selectedTag={selectedTag}
       setSelectedTag={setSelectedTag}
